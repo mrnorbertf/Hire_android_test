@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#009688</color>
+    <color name="colorPrimaryDark">#00796B</color>
+    <color name="colorPrimaryLight">#B2DFDB</color>
+    <color name="colorTextIcons">#FFFFFF</color>
+    <color name="colorAccent">#E040FB</color>
+    <color name="colorPrimaryText">#212121</color>
+    <color name="colorSecondaryText">#757575</color>
+    <color name="colorDividersRow">#FFFFFF</color>
+    <color name="colorDividers">#D5DFE5</color>
+
+    <color name="colorRowPrimary">#c1e5e2</color>
+    <color name="colorRowSecondary">#e0f2f0</color>
+    <color name="colorRowLow">#FFFFFF</color>
+
+    <color name="colorAbout">#00866B</color>
+
+
+
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
     <color name="Indigo">#304FFE</color>
+
+
+
 </resources>

@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/linear_third_layout"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linear_third_layout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorRowLow"
+    >
     <TextView
         android:id="@+id/textViewItemName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/background_light"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="16dp"
+        android:gravity="center_vertical"
         android:text="TextView"
-        android:textColor="@android:color/black"
-        android:textSize="18sp" />
+        android:textColor="@color/colorSecondaryText"
+        android:textSize="14sp"
+        android:fontFamily="sans-serif" />
 
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray" />
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="?android:attr/dividerVertical"/>
 </LinearLayout>

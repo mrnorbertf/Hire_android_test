@@ -26,4 +26,10 @@
         <item>@string/nav_item_timetable</item>
         <item>@string/nav_item_about</item>
     </string-array>
+
+
+    <!--ObservableScrollView-->
+    <string name="title_activity_parallaxtoolbarscrollview">Parallax scrollView &amp; toolbar</string>
+    <string name="title_activity_toolbarcontrolscrollview">ScrollView &amp; Toolbar</string>
+
 </resources>

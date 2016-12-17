@@ -1,16 +1,12 @@
 package com.fgurbanov.skynet.hire_android_test.Fragment;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,17 +27,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fgurbanov.skynet.hire_android_test.Connection.ToToConnection;
-import com.fgurbanov.skynet.hire_android_test.Data.City;
 import com.fgurbanov.skynet.hire_android_test.Data.Country;
-import com.fgurbanov.skynet.hire_android_test.Data.Station;
 import com.fgurbanov.skynet.hire_android_test.Data.StationLab;
-import com.fgurbanov.skynet.hire_android_test.DrawerActivity;
 import com.fgurbanov.skynet.hire_android_test.Fragment.CustomDatePicker.SwitchDataFragment;
 import com.fgurbanov.skynet.hire_android_test.R;
 import com.fgurbanov.skynet.hire_android_test.StationActivity;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -248,7 +239,7 @@ public class StationListFragment extends Fragment {
             //checkes if menu is already opened or not
             if(!isFirstViewClick){
                 mLinearScrollSecond.setVisibility(View.GONE);
-                mImageArrowFirst.setBackgroundResource(R.drawable.arw_lt);
+                mImageArrowFirst.setBackgroundResource(R.drawable.arw_up);
             } else {
                 mLinearScrollSecond.setVisibility(View.VISIBLE);
                 mImageArrowFirst.setBackgroundResource(R.drawable.arw_down);
@@ -266,7 +257,7 @@ public class StationListFragment extends Fragment {
 
                     } else {
                         isFirstViewClick = false;
-                        mImageArrowFirst.setBackgroundResource(R.drawable.arw_lt);
+                        mImageArrowFirst.setBackgroundResource(R.drawable.arw_up);
                         mLinearScrollSecond.setVisibility(View.GONE);
                     }
                     return false;
@@ -291,7 +282,7 @@ public class StationListFragment extends Fragment {
                 //checkes if menu is already opened or not
                 if(!isSecondViewClick) {
                     mLinearScrollThird.setVisibility(View.GONE);
-                    mImageArrowSecond.setBackgroundResource(R.drawable.arw_lt);
+                    mImageArrowSecond.setBackgroundResource(R.drawable.arw_up);
                 } else {
                     mLinearScrollThird.setVisibility(View.VISIBLE);
                     mImageArrowSecond.setBackgroundResource(R.drawable.arw_down);
@@ -307,7 +298,7 @@ public class StationListFragment extends Fragment {
                             mLinearScrollThird.setVisibility(View.VISIBLE);
                         } else {
                             isSecondViewClick=false;
-                            mImageArrowSecond.setBackgroundResource(R.drawable.arw_lt);
+                            mImageArrowSecond.setBackgroundResource(R.drawable.arw_up);
                             mLinearScrollThird.setVisibility(View.GONE);
                         }
                         return false;
