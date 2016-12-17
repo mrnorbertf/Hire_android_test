@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Hire android test</string>
+    <string name="menu_station_detail">Station detail</string>
+    <string name="search_station">Search station....</string>
+    <string name="clear_search">clear search</string>
+    <string name="station_from">select station from</string>
+    <string name="station_to">select station to</string>
+
+    <!-- datapicker item labels  -->
+    <string name="date_piker_title">Date of task: </string>
+    <string name="time_piker_title">Time of task: </string>
+    <string name="set_time_button">Set Time</string>
+    <string name="set_data_button">set date</string>
+
+
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+
+
+    <string name="nav_item_timetable">Timetable</string>
+    <string name="nav_item_about">About</string>
+    <string name="app_version">version 1.0</string>
+    <string name="copyright">Create by Gurbanov Fedor</string>
+    <!-- navigation drawer item labels  -->
+    <string-array name="nav_drawer_labels">
+        <item>@string/nav_item_timetable</item>
+        <item>@string/nav_item_about</item>
+    </string-array>
+</resources>
