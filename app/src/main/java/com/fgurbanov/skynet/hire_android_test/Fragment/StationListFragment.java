@@ -36,6 +36,7 @@ import com.fgurbanov.skynet.hire_android_test.Data.City;
 import com.fgurbanov.skynet.hire_android_test.Data.Country;
 import com.fgurbanov.skynet.hire_android_test.Data.Station;
 import com.fgurbanov.skynet.hire_android_test.Data.StationLab;
+import com.fgurbanov.skynet.hire_android_test.DrawerActivity;
 import com.fgurbanov.skynet.hire_android_test.Fragment.CustomDatePicker.SwitchDataFragment;
 import com.fgurbanov.skynet.hire_android_test.R;
 import com.fgurbanov.skynet.hire_android_test.StationActivity;
@@ -52,20 +53,15 @@ public class StationListFragment extends Fragment {
 
     //Tag
     private static final String TAG = "StationListFragment";
-    private static final String SAVED_STATION_INFORMATION = "station_data";
     private static final String SEARCH_STATUS_FAILED = "StationListFragment.string_was_not_found";
 
     //ActivityResultRequest
     public static final int REQUEST_FULL_DATE = 2;
     public static final String DIALOG_SWITCH = "DialogSwitch";
 
-    //Data
-    private List<Country> mCountryList;
-
     //Flag
     boolean isFirstViewClick = false;
     boolean isSecondViewClick = false;
-    boolean isDataReady;
 
     //Widget
     private LinearLayout mLinearListView;
@@ -92,18 +88,10 @@ public class StationListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list_stations, container, false);
 
         mLinearListView = (LinearLayout) view.findViewById(R.id.linear_ListView);
-
-        if (savedInstanceState != null) {
-            isDataReady = savedInstanceState.getBoolean
-                    (SAVED_STATION_INFORMATION);
-            setupData();
-            mSearchView.clearFocus();
-        } else {
-            isDataReady = false;
-            new StationItemsTask().execute();
-        }
         mStationFromACTextView = (AutoCompleteTextView) view.findViewById(R.id.station_from_textView);
         mStationToACTextView = (AutoCompleteTextView) view.findViewById(R.id.station_to_textView);
+
+        setupData();
 
         ImageButton swapImageButton = (ImageButton) view.findViewById(R.id.swap_image_button);
         swapImageButton.setOnClickListener(new View.OnClickListener() {
@@ -233,31 +221,21 @@ public class StationListFragment extends Fragment {
         return SEARCH_STATUS_FAILED;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        setupData();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(SAVED_STATION_INFORMATION, isDataReady);
-    }
-
     private void setupData() {
         if (isAdded()) {
-            if (isDataReady){
-                createMultiLevelListView();
-                setAdapterRouteElementView();
-            }
+            //if (isDataReady){
+            createMultiLevelListView();
+            setAdapterRouteElementView();
+            //}
         }
 
     }
 
     private void createMultiLevelListView() {
+        StationLab stationLab = StationLab.get(getActivity());
+        List<Country> countryList = stationLab.getCountriesList();
         //Adds data into first row
-        for (int i = 0; i < mCountryList.size(); i++) {
+        for (int i = 0; i < countryList.size(); i++) {
             //LayoutInflater inflater = null;
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View mLinearView = inflater.inflate(R.layout.row_first, null);
@@ -295,11 +273,11 @@ public class StationListFragment extends Fragment {
                 }
             });
 
-            final String name = mCountryList.get(i).getCountryTitle();
+            final String name = countryList.get(i).getCountryTitle();
             mCountryName.setText(name);
 
             //Adds data into second row
-            for (int j = 0; j < mCountryList.get(i).getCitiesList().size(); j++)
+            for (int j = 0; j < countryList.get(i).getCitiesList().size(); j++)
             {
                 LayoutInflater inflater2 = null;
                 inflater2 = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -336,18 +314,18 @@ public class StationListFragment extends Fragment {
                     }
                 });
 
-                final String cityTitle = mCountryList.get(i).getCitiesList().get(j).getCityTitle();
+                final String cityTitle = countryList.get(i).getCitiesList().get(j).getCityTitle();
                 mCityTitle.setText(cityTitle);
 
                 //Adds items in subcategories
-                for (int k = 0; k < mCountryList.get(i).getCitiesList().get(j).getStationList().size(); k++) {
+                for (int k = 0; k < countryList.get(i).getCitiesList().get(j).getStationList().size(); k++) {
                     LayoutInflater inflater3 = null;
                     inflater3 = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     View mLinearView3 = inflater3.inflate(R.layout.row_third, null);
 
                     final LinearLayout mLinearThirdLayout=(LinearLayout)mLinearView3.findViewById(R.id.linear_third_layout);
                     TextView mStationName = (TextView) mLinearView3.findViewById(R.id.textViewItemName);
-                    final String stationTitle = mCountryList.get(i).getCitiesList().get(j).getStationList().get(k).getStationTitle();
+                    final String stationTitle = countryList.get(i).getCitiesList().get(j).getStationList().get(k).getStationTitle();
                     mStationName.setText(stationTitle);
 
                     mLinearThirdLayout.setOnClickListener(new View.OnClickListener() {
@@ -384,93 +362,6 @@ public class StationListFragment extends Fragment {
                 android.R.layout.simple_dropdown_item_1line,
                 mStationToTitleList
         ));
-    }
-
-    private class StationItemsTask extends AsyncTask<Void,Void,List<Station>> {
-        private ProgressDialog dialog;
-
-        @Override
-        protected void onPreExecute() {
-            dialog = new ProgressDialog(getContext());
-            dialog.setMessage("Doing something, please wait.");
-            dialog.show();
-        }
-
-        @Override
-        protected List<Station> doInBackground(Void... params) {
-            return new ToToConnection().getStationItems();
-        }
-
-        @Override
-        protected void onPostExecute(List<Station> stationList) {
-            mCountryList = refactorData(stationList);
-            StationLab stationLab = StationLab.get(getActivity());
-            stationLab.setCountriesList(mCountryList);
-            stationLab.setStationsList(stationList);
-            isDataReady = true;
-            setupData();
-            if (dialog.isShowing()) {
-                dialog.dismiss();
-            }
-        }
-
-    }
-
-    private List<Country> refactorData(List<Station> stationList){
-        List<Country> countryList = new ArrayList<>();
-
-        for (Station station : stationList) {
-            Country country = new Country(station.getCountryTitle());
-            City city = new City(station.getCityTitle());
-
-            int indexOfCountry  = indexOf(countryList,country);
-            if (indexOfCountry != -1){
-
-                int indexOfCity  = indexOf(countryList.get(indexOfCountry).getCitiesList(), city);
-                //int indexOfCity  = country.getCitiesList().indexOf(city);
-                if (indexOfCity != -1){
-                    countryList.get(indexOfCountry).getCitiesList().get(indexOfCity).getStationList().add(station);
-                } else {
-                    countryList.get(indexOfCountry).getCitiesList().add(city);
-                    indexOfCity  = indexOf(countryList.get(indexOfCountry).getCitiesList(), city);
-                    countryList.get(indexOfCountry).getCitiesList().get(indexOfCity).getStationList().add(station);
-                }
-            } else {
-                city.getStationList().add(station);
-                country.getCitiesList().add(city);
-                countryList.add(country);
-            }
-        }
-
-        return countryList;
-    }
-
-    private int indexOf(List<Country> countryList, Country country){
-        if (countryList.size() > 0){
-            int i = 0;
-            for (Country temp : countryList){
-                if ( temp.getCountryTitle().equals( country.getCountryTitle() )) {
-                    return i;
-                } else {i++;}
-            }
-            return -1;
-        } else {
-            return -1;
-        }
-    }
-
-    private int indexOf(List<City> cities, City city){
-        if (cities.size() > 0){
-            int i = 0;
-            for (City temp : cities){
-                if ( temp.getCityTitle().equals(city.getCityTitle()) ) {
-                    return i;
-                } else {i++;}
-            }
-            return -1;
-        } else {
-            return -1;
-        }
     }
 
     @Override

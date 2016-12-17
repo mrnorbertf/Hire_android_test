@@ -7,15 +7,7 @@ package com.fgurbanov.skynet.hire_android_test.Fragment.View;
 public class NavDrawerItem {
     private String title;
 
-
-    public NavDrawerItem() {
-
-    }
-
-    public NavDrawerItem(String title) {
-        this.title = title;
-    }
-
+    public NavDrawerItem() {}
 
     public String getTitle() {
         return title;
