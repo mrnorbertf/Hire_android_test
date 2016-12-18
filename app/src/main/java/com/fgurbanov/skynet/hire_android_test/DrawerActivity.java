@@ -34,6 +34,7 @@ public class DrawerActivity extends AppCompatActivity implements FragmentDrawer.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer_fragment);
 
