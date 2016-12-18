@@ -1,7 +1,9 @@
 package com.fgurbanov.skynet.hire_android_test.Connection;
 
+import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.fgurbanov.skynet.hire_android_test.Data.Station;
 
@@ -21,14 +23,14 @@ import java.util.List;
  * Created by SkyNet on 12.12.2016.
  */
 
-public class ToToConnection {
+public class ConnectionToDataServer {
 
-    private static final String TAG = "ToToConnection";
+    private static final String TAG = "ConnectionToDataServer";
 
     private static final String STATIONS_URL = "https://raw.githubusercontent.com/tutu-ru/hire_android_test/master/allStations.json";
 
 
-    public byte[] getUrlBytes(String urlSpec) throws IOException {
+    private byte[] getUrlBytes(String urlSpec) throws IOException {
         URL url = new URL(urlSpec);
         HttpURLConnection connection = (HttpURLConnection)url.openConnection();
         try {
@@ -51,13 +53,12 @@ public class ToToConnection {
         }
     }
 
-    public String getUrlString(String urlSpec) throws IOException {
+    private String getUrlString(String urlSpec) throws IOException {
         return new String(getUrlBytes(urlSpec));
     }
 
     public List<Station> getStationItems() {
         List<Station> stationList = new ArrayList<>();
-
         try {
             String url = Uri.parse(STATIONS_URL)
                     .buildUpon()
@@ -75,7 +76,7 @@ public class ToToConnection {
         return stationList;
     }
 
-    public void parseItems(List<Station> stationList, JSONObject jsonBody)
+    private void parseItems(List<Station> stationList, JSONObject jsonBody)
             throws IOException, JSONException{
 
         //Log.e(TAG, jsonBody.toString());

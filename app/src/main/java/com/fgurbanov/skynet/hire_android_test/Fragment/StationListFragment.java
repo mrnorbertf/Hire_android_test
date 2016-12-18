@@ -1,11 +1,14 @@
 package com.fgurbanov.skynet.hire_android_test.Fragment;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.SearchView;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -24,13 +27,18 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.fgurbanov.skynet.hire_android_test.Connection.ConnectionToDataServer;
+import com.fgurbanov.skynet.hire_android_test.Data.City;
 import com.fgurbanov.skynet.hire_android_test.Data.Country;
+import com.fgurbanov.skynet.hire_android_test.Data.Station;
 import com.fgurbanov.skynet.hire_android_test.Data.StationLab;
+import com.fgurbanov.skynet.hire_android_test.DrawerActivity;
 import com.fgurbanov.skynet.hire_android_test.Fragment.Adapter.ThreeLevelExpListAdapter.ParentLevelAdapter;
 import com.fgurbanov.skynet.hire_android_test.Fragment.CustomDatePicker.SwitchDataFragment;
 import com.fgurbanov.skynet.hire_android_test.R;
 import com.fgurbanov.skynet.hire_android_test.StationActivity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -49,12 +57,13 @@ public class StationListFragment extends Fragment {
     public static final String DIALOG_SWITCH = "DialogSwitch";
 
     //Widget
-    private LinearLayout mLinearListView;
     private SearchView mSearchView;
     private AutoCompleteTextView mStationFromACTextView;
     private AutoCompleteTextView mStationToACTextView;
     private Button mSwitchDataButton;
+    private Button mRefreshConnectionButton;
     private ExpandableListView mExpandableListView;
+    private CardView mListCardView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,14 +78,16 @@ public class StationListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_stations, container, false);
 
-        mLinearListView = (LinearLayout) view.findViewById(R.id.linear_ListView);
         mStationFromACTextView = (AutoCompleteTextView) view.findViewById(R.id.station_from_textView);
         mStationToACTextView = (AutoCompleteTextView) view.findViewById(R.id.station_to_textView);
         mExpandableListView = (ExpandableListView) view.findViewById(R.id.expandableListView_Parent);
+        ImageButton swapImageButton = (ImageButton) view.findViewById(R.id.swap_image_button);
+        mSwitchDataButton = (Button) view.findViewById(R.id.setData_button);
+        mRefreshConnectionButton = (Button) view.findViewById(R.id.refresh_datalist_button);
+        mListCardView = (CardView) view.findViewById(R.id.list_data_card_view);
 
         setupData();
 
-        ImageButton swapImageButton = (ImageButton) view.findViewById(R.id.swap_image_button);
         swapImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,7 +113,6 @@ public class StationListFragment extends Fragment {
             }
         });
 
-        mSwitchDataButton = (Button) view.findViewById(R.id.setData_button);
         mSwitchDataButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,6 +124,12 @@ public class StationListFragment extends Fragment {
             }
         });
 
+        mRefreshConnectionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setupData();
+            }
+        });
 
         return view;
     }
@@ -206,12 +222,17 @@ public class StationListFragment extends Fragment {
     }
 
     private void setupData() {
-        if (isAdded()) {
-
-            createCustomExpandableListView();
-
-            //createMultiLevelListView();
-            setAdapterRouteElementView();
+        StationLab stationLab = StationLab.get(getActivity());
+        List<Station> stationList = stationLab.getStations();
+        if (stationList.size() == 0){
+            new StationItemsTask().execute();
+        } else {
+            if (isAdded()) {
+                mListCardView.setVisibility(View.VISIBLE);
+                mRefreshConnectionButton.setVisibility(View.INVISIBLE);
+                createCustomExpandableListView();
+                setAdapterRouteElementView();
+            }
         }
 
     }
@@ -254,4 +275,100 @@ public class StationListFragment extends Fragment {
         }
     }
 
+    public class StationItemsTask extends AsyncTask<Void,Void,List<Station>> {
+
+        private ProgressDialog mDialog;
+
+        @Override
+        protected void onPreExecute() {
+            mDialog = new ProgressDialog(getActivity());
+            mDialog.setMessage("Doing something, please wait.");
+            mDialog.show();
+        }
+
+        @Override
+        protected List<Station> doInBackground(Void... params) {
+            return new ConnectionToDataServer().getStationItems();
+        }
+
+        @Override
+        protected void onPostExecute(List<Station> stationList) {
+            boolean isGetInformation = true;
+            if (stationList.size() == 0){
+                Toast.makeText(getContext(), "No internet connection, try again later", Toast.LENGTH_SHORT).show();
+                mRefreshConnectionButton.setVisibility(View.VISIBLE);
+                mListCardView.setVisibility(View.INVISIBLE);
+                isGetInformation  = false;
+            }
+            List<Country> mCountryList = refactorData(stationList);
+            StationLab stationLab = StationLab.get(getActivity());
+            stationLab.setCountriesList(mCountryList);
+            stationLab.setStationsList(stationList);
+
+            if (mDialog.isShowing()) {
+                mDialog.dismiss();
+            }
+            if (isGetInformation) {
+                setupData();
+            }
+        }
+
+    }
+
+    private List<Country> refactorData(List<Station> stationList){
+        List<Country> countryList = new ArrayList<>();
+
+        for (Station station : stationList) {
+            Country country = new Country(station.getCountryTitle());
+            City city = new City(station.getCityTitle());
+
+            int indexOfCountry  = indexOf(countryList,country);
+            if (indexOfCountry != -1){
+
+                int indexOfCity  = indexOf(countryList.get(indexOfCountry).getCitiesList(), city);
+                //int indexOfCity  = country.getCitiesList().indexOf(city);
+                if (indexOfCity != -1){
+                    countryList.get(indexOfCountry).getCitiesList().get(indexOfCity).getStationList().add(station);
+                } else {
+                    countryList.get(indexOfCountry).getCitiesList().add(city);
+                    indexOfCity  = indexOf(countryList.get(indexOfCountry).getCitiesList(), city);
+                    countryList.get(indexOfCountry).getCitiesList().get(indexOfCity).getStationList().add(station);
+                }
+            } else {
+                city.getStationList().add(station);
+                country.getCitiesList().add(city);
+                countryList.add(country);
+            }
+        }
+
+        return countryList;
+    }
+
+    private int indexOf(List<Country> countryList, Country country){
+        if (countryList.size() > 0){
+            int i = 0;
+            for (Country temp : countryList){
+                if ( temp.getCountryTitle().equals( country.getCountryTitle() )) {
+                    return i;
+                } else {i++;}
+            }
+            return -1;
+        } else {
+            return -1;
+        }
+    }
+
+    private int indexOf(List<City> cities, City city){
+        if (cities.size() > 0){
+            int i = 0;
+            for (City temp : cities){
+                if ( temp.getCityTitle().equals(city.getCityTitle()) ) {
+                    return i;
+                } else {i++;}
+            }
+            return -1;
+        } else {
+            return -1;
+        }
+    }
 }

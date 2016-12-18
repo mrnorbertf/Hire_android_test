@@ -22,6 +22,7 @@
         android:id="@+id/imageSecondArrow"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:src="@drawable/arw_down"
         android:layout_alignParentRight="true"
         android:layout_marginRight="16dp"/>
 

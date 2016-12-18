@@ -5,6 +5,7 @@
     <string name="clear_search">clear search</string>
     <string name="station_from">select station from</string>
     <string name="station_to">select station to</string>
+    <string name="refresh_datalist_string">No internet connection, click to try again</string>
 
     <!-- datapicker item labels  -->
     <string name="date_piker_title">Date of task: </string>
@@ -31,5 +32,7 @@
     <!--ObservableScrollView-->
     <string name="title_activity_parallaxtoolbarscrollview">Parallax scrollView &amp; toolbar</string>
     <string name="title_activity_toolbarcontrolscrollview">ScrollView &amp; Toolbar</string>
+    <string name="swap_content_in_editview">Swap content in editView</string>
+
 
 </resources>

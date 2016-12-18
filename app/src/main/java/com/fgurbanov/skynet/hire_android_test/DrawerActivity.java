@@ -10,8 +10,9 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
-import com.fgurbanov.skynet.hire_android_test.Connection.ToToConnection;
+import com.fgurbanov.skynet.hire_android_test.Connection.ConnectionToDataServer;
 import com.fgurbanov.skynet.hire_android_test.Data.City;
 import com.fgurbanov.skynet.hire_android_test.Data.Country;
 import com.fgurbanov.skynet.hire_android_test.Data.Station;
@@ -48,8 +49,8 @@ public class DrawerActivity extends AppCompatActivity implements FragmentDrawer.
         mDrawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
         mDrawerFragment.setDrawerListener(this);
 
-
-        new StationItemsTask().execute();
+        displayView(0);
+//      new StationItemsTask().execute();
 
 
     }
@@ -107,23 +108,23 @@ public class DrawerActivity extends AppCompatActivity implements FragmentDrawer.
 
         @Override
         protected List<Station> doInBackground(Void... params) {
-            return new ToToConnection().getStationItems();
+            return new ConnectionToDataServer().getStationItems();
         }
 
         @Override
         protected void onPostExecute(List<Station> stationList) {
+            if (stationList.size() == 0){
+                Toast.makeText(getApplicationContext(), "No internet connection, try again later", Toast.LENGTH_SHORT).show();
+            }
             List<Country> mCountryList = refactorData(stationList);
             StationLab stationLab = StationLab.get(DrawerActivity.this);
             stationLab.setCountriesList(mCountryList);
             stationLab.setStationsList(stationList);
 
-            //isDataReady = true;
-            //setupData();
-
             if (mDialog.isShowing()) {
                 mDialog.dismiss();
             }
-            // display the first navigation drawer view on app launch
+
             displayView(0);
         }
 
