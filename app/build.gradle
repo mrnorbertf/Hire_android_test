@@ -33,6 +33,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:design:25.0.1'
     compile 'com.android.support:support-v4:25.0.1'
-
     compile 'com.github.ksoichiro:android-observablescrollview:1.5.0'
+    compile 'com.android.support:support-annotations:25.1.0'
+    compile 'com.android.support.test:runner:0.5'
 }

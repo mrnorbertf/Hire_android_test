@@ -66,7 +66,8 @@ public class DrawerActivity extends AppCompatActivity implements FragmentDrawer.
         switch (position) {
             case 0:
                 if (mTimetableFragment == null) {
-                    mTimetableFragment = new StationListFragment().newInstance();
+//                    mTimetableFragment = new StationListFragment().newInstance();
+                    mTimetableFragment = new StationListFragment();
                 }
                 fragment= mTimetableFragment;
                 title = getString(R.string.nav_item_timetable);
@@ -93,7 +94,7 @@ public class DrawerActivity extends AppCompatActivity implements FragmentDrawer.
         }
     }
 
-    private class StationItemsTask extends AsyncTask<Void,Void,List<Station>> {
+    public class StationItemsTask extends AsyncTask<Void,Void,List<Station>> {
 
         private ProgressDialog mDialog;
 

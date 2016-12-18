@@ -13,22 +13,20 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fgurbanov.skynet.hire_android_test.Data.Country;
 import com.fgurbanov.skynet.hire_android_test.Data.StationLab;
+import com.fgurbanov.skynet.hire_android_test.Fragment.Adapter.ThreeLevelExpListAdapter.ParentLevelAdapter;
 import com.fgurbanov.skynet.hire_android_test.Fragment.CustomDatePicker.SwitchDataFragment;
 import com.fgurbanov.skynet.hire_android_test.R;
 import com.fgurbanov.skynet.hire_android_test.StationActivity;
@@ -50,20 +48,13 @@ public class StationListFragment extends Fragment {
     public static final int REQUEST_FULL_DATE = 2;
     public static final String DIALOG_SWITCH = "DialogSwitch";
 
-    //Flag
-    boolean isFirstViewClick = false;
-    boolean isSecondViewClick = false;
-
     //Widget
     private LinearLayout mLinearListView;
     private SearchView mSearchView;
     private AutoCompleteTextView mStationFromACTextView;
     private AutoCompleteTextView mStationToACTextView;
     private Button mSwitchDataButton;
-
-    public static StationListFragment newInstance() {
-        return new StationListFragment();
-    }
+    private ExpandableListView mExpandableListView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,6 +72,7 @@ public class StationListFragment extends Fragment {
         mLinearListView = (LinearLayout) view.findViewById(R.id.linear_ListView);
         mStationFromACTextView = (AutoCompleteTextView) view.findViewById(R.id.station_from_textView);
         mStationToACTextView = (AutoCompleteTextView) view.findViewById(R.id.station_to_textView);
+        mExpandableListView = (ExpandableListView) view.findViewById(R.id.expandableListView_Parent);
 
         setupData();
 
@@ -121,6 +113,7 @@ public class StationListFragment extends Fragment {
                 dialog.show(manager, DIALOG_SWITCH);
             }
         });
+
 
         return view;
     }
@@ -214,131 +207,25 @@ public class StationListFragment extends Fragment {
 
     private void setupData() {
         if (isAdded()) {
-            //if (isDataReady){
-            createMultiLevelListView();
+
+            createCustomExpandableListView();
+
+            //createMultiLevelListView();
             setAdapterRouteElementView();
-            //}
         }
 
     }
 
-    private void createMultiLevelListView() {
+    private void createCustomExpandableListView() {
         StationLab stationLab = StationLab.get(getActivity());
         List<Country> countryList = stationLab.getCountriesList();
-        //Adds data into first row
-        for (int i = 0; i < countryList.size(); i++) {
-            //LayoutInflater inflater = null;
-            LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View mLinearView = inflater.inflate(R.layout.row_first, null);
-/////////////////////////////////
-            final TextView mCountryName = (TextView) mLinearView.findViewById(R.id.textViewName);
-            final RelativeLayout mLinearFirstArrow=(RelativeLayout)mLinearView.findViewById(R.id.linearFirst);
-            final ImageView mImageArrowFirst=(ImageView)mLinearView.findViewById(R.id.imageFirstArrow);
-            final LinearLayout mLinearScrollSecond=(LinearLayout)mLinearView.findViewById(R.id.linear_scroll);
-
-            //checkes if menu is already opened or not
-            if(!isFirstViewClick){
-                mLinearScrollSecond.setVisibility(View.GONE);
-                mImageArrowFirst.setBackgroundResource(R.drawable.arw_up);
-            } else {
-                mLinearScrollSecond.setVisibility(View.VISIBLE);
-                mImageArrowFirst.setBackgroundResource(R.drawable.arw_down);
-            }
-
-            //Handles onclick effect on list item
-            //mLinearFirstArrow.setOnTouchListener(new View.OnTouchListener() {
-            mImageArrowFirst.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event){
-                    if(!isFirstViewClick) {
-                        isFirstViewClick = true;
-                        mImageArrowFirst.setBackgroundResource(R.drawable.arw_down);
-                        mLinearScrollSecond.setVisibility(View.VISIBLE);
-
-                    } else {
-                        isFirstViewClick = false;
-                        mImageArrowFirst.setBackgroundResource(R.drawable.arw_up);
-                        mLinearScrollSecond.setVisibility(View.GONE);
-                    }
-                    return false;
-                }
-            });
-
-            final String name = countryList.get(i).getCountryTitle();
-            mCountryName.setText(name);
-
-            //Adds data into second row
-            for (int j = 0; j < countryList.get(i).getCitiesList().size(); j++)
-            {
-                LayoutInflater inflater2 = null;
-                inflater2 = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View mLinearView2 = inflater2.inflate(R.layout.row_second, null);
-
-                TextView mCityTitle = (TextView) mLinearView2.findViewById(R.id.textViewTitle);
-                final RelativeLayout mLinearSecondArrow=(RelativeLayout)mLinearView2.findViewById(R.id.linearSecond);
-                final ImageView mImageArrowSecond=(ImageView)mLinearView2.findViewById(R.id.imageSecondArrow);
-                final LinearLayout mLinearScrollThird=(LinearLayout)mLinearView2.findViewById(R.id.linear_scroll_third);
-
-                //checkes if menu is already opened or not
-                if(!isSecondViewClick) {
-                    mLinearScrollThird.setVisibility(View.GONE);
-                    mImageArrowSecond.setBackgroundResource(R.drawable.arw_up);
-                } else {
-                    mLinearScrollThird.setVisibility(View.VISIBLE);
-                    mImageArrowSecond.setBackgroundResource(R.drawable.arw_down);
-                }
-                //Handles onclick effect on list item
-                //mLinearSecondArrow.setOnTouchListener(new View.OnTouchListener() {
-                mImageArrowSecond.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        if(!isSecondViewClick) {
-                            isSecondViewClick=true;
-                            mImageArrowSecond.setBackgroundResource(R.drawable.arw_down);
-                            mLinearScrollThird.setVisibility(View.VISIBLE);
-                        } else {
-                            isSecondViewClick=false;
-                            mImageArrowSecond.setBackgroundResource(R.drawable.arw_up);
-                            mLinearScrollThird.setVisibility(View.GONE);
-                        }
-                        return false;
-                    }
-                });
-
-                final String cityTitle = countryList.get(i).getCitiesList().get(j).getCityTitle();
-                mCityTitle.setText(cityTitle);
-
-                //Adds items in subcategories
-                for (int k = 0; k < countryList.get(i).getCitiesList().get(j).getStationList().size(); k++) {
-                    LayoutInflater inflater3 = null;
-                    inflater3 = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    View mLinearView3 = inflater3.inflate(R.layout.row_third, null);
-
-                    final LinearLayout mLinearThirdLayout=(LinearLayout)mLinearView3.findViewById(R.id.linear_third_layout);
-                    TextView mStationName = (TextView) mLinearView3.findViewById(R.id.textViewItemName);
-                    final String stationTitle = countryList.get(i).getCitiesList().get(j).getStationList().get(k).getStationTitle();
-                    mStationName.setText(stationTitle);
-
-                    mLinearThirdLayout.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent intent = StationActivity
-                                    .newIntent(getActivity(), stationTitle);
-                            startActivity(intent);
-                        }
-                    });
-
-
-                    mLinearScrollThird.addView(mLinearView3);
-                }
-
-                mLinearScrollSecond.addView(mLinearView2);
-
-            }
-
-            mLinearListView.addView(mLinearView);
+        if (mExpandableListView != null) {
+            ParentLevelAdapter parentLevelAdapter = new ParentLevelAdapter(getContext(), countryList);
+            mExpandableListView.setAdapter(parentLevelAdapter);
+            mExpandableListView.setGroupIndicator(null);
         }
     }
+
 
     private void setAdapterRouteElementView() {
         StationLab stationLab = StationLab.get(getActivity());

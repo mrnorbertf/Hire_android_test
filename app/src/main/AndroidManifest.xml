@@ -13,19 +13,13 @@
 
         <activity
             android:name=".DrawerActivity"
-            android:theme="@style/SplashTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".StationListActivity"
+            android:theme="@style/SplashTheme"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan">
             <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
                 <action android:name="android.intent.action.SEARCH"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
 
             <meta-data
@@ -36,13 +30,9 @@
         <activity
             android:name=".StationActivity"
             android:label="@string/menu_station_detail"
-            android:parentActivityName=".StationListActivity">
+            android:parentActivityName=".DrawerActivity">
         </activity>
 
-        <activity
-            android:name=".AboutActivity"
-            android:label="@string/nav_item_about">
-        </activity>
     </application>
 
 </manifest>

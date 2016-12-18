@@ -18,13 +18,15 @@
         android:text="station title"
         android:id="@+id/station_title_textView"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="16dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="16dp"
         android:gravity="center_vertical"
         android:textColor="@color/colorSecondaryText"
         android:textSize="24sp"
         android:fontFamily="sans-serif"
+        android:maxLines="3"
         style="@style/TextAppearance.AppCompat.Headline"/>
 
     <TextView
