@@ -10,6 +10,12 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.fgurbanov.skynet.hire_android_test.Fragment.StationFragment;
 
+/**
+ * Не является фрагментом, чтобы добавить возможность backbutton в toolbar
+ * для данной activity указан parentActivity.
+ * данный элемент не имеет возможности сразу выйти в раздел about.
+ * Также не предусматривается возможность вызова DrawerMenu
+ */
 public class StationActivity extends AppCompatActivity {
 
     private static final String EXTRA_STATION_ID = "com.fgurbanov.skynet.hire_android_test";

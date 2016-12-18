@@ -5,6 +5,7 @@ import android.widget.ExpandableListView;
 
 /**
  * Created by SkyNet on 18.12.2016.
+ * Вспогательный класс для отображения вложенного списка
  */
 
 public class SecondLevelExpandableListView extends ExpandableListView {

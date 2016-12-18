@@ -5,6 +5,7 @@ import java.util.List;
 
 /**
  * Created by SkyNet on 13.12.2016.
+ * Для expandbleListView потребовалось разделить данные на 3 класса
  */
 
 public class Country {
@@ -21,15 +22,8 @@ public class Country {
         return mCitiesList;
     }
 
-    public void setCitiesList(List<City> citiesList) {
-        mCitiesList = citiesList;
-    }
-
     public String getCountryTitle() {
         return mCountryTitle;
     }
 
-    public void setCountryTitle(String countryTitle) {
-        mCountryTitle = countryTitle;
-    }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/linear_third_layout"
     android:orientation="vertical"
@@ -14,16 +14,8 @@
         android:layout_marginStart="40dp"
         android:layout_marginEnd="16dp"
         android:gravity="center_vertical"
-        android:text="TextView"
         android:textColor="@color/colorSecondaryText"
         android:textSize="14sp"
         android:fontFamily="sans-serif" />
 
-
-<!--    <View
-          android:layout_width="match_parent"
-          android:layout_height="1dp"
-          android:background="?android:attr/dividerVertical"/>
-          -->
-
-</LinearLayout>
+</RelativeLayout>

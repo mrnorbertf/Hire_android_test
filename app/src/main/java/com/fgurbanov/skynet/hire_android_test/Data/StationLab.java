@@ -8,6 +8,9 @@ import java.util.UUID;
 
 /**
  * Created by SkyNet on 12.12.2016.
+ * Синглет для хранения данных.
+ * Удобен для хранения информации, поскольку держит всю информацию
+ * пока приложение остается в памяти.
  */
 
 public class StationLab {
@@ -44,6 +47,7 @@ public class StationLab {
         this.mStations = mStations;
     }
 
+    //Все данные о станциях в конечном итоге представляются как список стран.
     public void setCountriesList(List<Country> mCountriesList) {
         this.mCountriesList = mCountriesList;
     }
@@ -52,6 +56,8 @@ public class StationLab {
         return mCountriesList;
     }
 
+    //Для заполнения списка нам нужны только названия станций
+    //поэтому было решено вынести их в отдельный список для удобства
     public List<String> getStationTitleArrayList(){
         List<String> stationTitleArrayList = new ArrayList<>();
         for (Station temp : mStations){
@@ -60,6 +66,9 @@ public class StationLab {
         return stationTitleArrayList;
     }
 
+    //Т.к. в приложении есть разница между станциями отправления и прибытия,
+    //то мной они были разбиты на два списка.
+    //В данном виде они будут удобны для автозаполнения полей
     public List<String> getStationFromTitleArrayList(){
         List<String> stationFromTitleArrayList = new ArrayList<>();
         for (Station temp : mStations){

@@ -18,6 +18,10 @@ import com.fgurbanov.skynet.hire_android_test.StationActivity;
 
 import java.util.List;
 
+/**
+ * Created by SkyNet on 17.12.2016.
+ * стандартный класс для ExpandableList
+ */
 
 public class ParentLevelAdapter extends BaseExpandableListAdapter {
 
@@ -39,6 +43,8 @@ public class ParentLevelAdapter extends BaseExpandableListAdapter {
         return childPosition;
     }
 
+    //Child  в данном случае другой вложенный лист, поэтому создаем для него адаптер
+    // также вешаем onClick на финальный элемент списка
     @Override
     public View getChildView(int groupPosition, int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {

@@ -15,6 +15,7 @@ import java.util.List;
 
 /**
  * Created by SkyNet on 17.12.2016.
+ * стандартный класс RecyclerView.Adapter для бокового меню
  */
 
 public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDrawerAdapter.MyViewHolder> {

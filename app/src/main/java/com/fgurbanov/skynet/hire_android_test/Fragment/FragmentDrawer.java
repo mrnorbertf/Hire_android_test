@@ -23,6 +23,7 @@ import java.util.List;
 
 /**
  * Created by SkyNet on 17.12.2016.
+ * Стандартный фрагмент для отображения выпадающего меню
  */
 
 public class FragmentDrawer extends Fragment {
@@ -173,8 +174,6 @@ public class FragmentDrawer extends Fragment {
         public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
 
         }
-
-
     }
 
     public interface FragmentDrawerListener {

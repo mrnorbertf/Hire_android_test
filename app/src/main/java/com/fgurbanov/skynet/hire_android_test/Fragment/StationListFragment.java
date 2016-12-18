@@ -44,6 +44,8 @@ import java.util.List;
 
 /**
  * Created by SkyNet on 12.12.2016.
+ * Целевой фрагмент.
+ * Весь интерфейс представлен на нем.
  */
 
 public class StationListFragment extends Fragment {
@@ -78,6 +80,7 @@ public class StationListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_stations, container, false);
 
+        //Определяем виджеты
         mStationFromACTextView = (AutoCompleteTextView) view.findViewById(R.id.station_from_textView);
         mStationToACTextView = (AutoCompleteTextView) view.findViewById(R.id.station_to_textView);
         mExpandableListView = (ExpandableListView) view.findViewById(R.id.expandableListView_Parent);
@@ -86,8 +89,11 @@ public class StationListFragment extends Fragment {
         mRefreshConnectionButton = (Button) view.findViewById(R.id.refresh_datalist_button);
         mListCardView = (CardView) view.findViewById(R.id.list_data_card_view);
 
+        //Заполняем данные
         setupData();
 
+        //Обработчики нажатий
+        //Поменять местави станцию отправления и прибытия
         swapImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -113,6 +119,7 @@ public class StationListFragment extends Fragment {
             }
         });
 
+        //Установить время отправления
         mSwitchDataButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -124,6 +131,8 @@ public class StationListFragment extends Fragment {
             }
         });
 
+        //Если не получилось скачать данные с сервера и заполнить список,
+        // то требуется предоставить возможность установить повторно соединение
         mRefreshConnectionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -134,6 +143,8 @@ public class StationListFragment extends Fragment {
         return view;
     }
 
+    //Т.к. списки станциий отправление и прибытия не идентичны
+    //требуется проверить вхождение содержимых при их смене местами
     private boolean checkStationEntry(String stationFrom, String stationTo) {
         StationLab stationLab = StationLab.get(getActivity());
         List<String> mStationFromTitleList = stationLab.getStationFromTitleArrayList();
@@ -173,6 +184,7 @@ public class StationListFragment extends Fragment {
         }
     }
 
+    //Добавил возможность поиска станций по кусочку названия
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -221,6 +233,7 @@ public class StationListFragment extends Fragment {
         return SEARCH_STATUS_FAILED;
     }
 
+    //Загрузка данных и заполнение списка
     private void setupData() {
         StationLab stationLab = StationLab.get(getActivity());
         List<Station> stationList = stationLab.getStations();
@@ -237,6 +250,7 @@ public class StationListFragment extends Fragment {
 
     }
 
+    //непосредственное заполнение многоуровнего списка
     private void createCustomExpandableListView() {
         StationLab stationLab = StationLab.get(getActivity());
         List<Country> countryList = stationLab.getCountriesList();
@@ -247,7 +261,7 @@ public class StationListFragment extends Fragment {
         }
     }
 
-
+    //установка подсказок для полей "станция отправления" и "станция прибытия"
     private void setAdapterRouteElementView() {
         StationLab stationLab = StationLab.get(getActivity());
         List<String> mStationFromTitleList = stationLab.getStationFromTitleArrayList();
@@ -263,6 +277,7 @@ public class StationListFragment extends Fragment {
         ));
     }
 
+    //необходимо для получения времени отправления при закрытии фрагмента с Data и TimePicker
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_OK) {
@@ -275,6 +290,7 @@ public class StationListFragment extends Fragment {
         }
     }
 
+    //AsyncTask для скачивания и JSON со списком
     public class StationItemsTask extends AsyncTask<Void,Void,List<Station>> {
 
         private ProgressDialog mDialog;
@@ -294,6 +310,9 @@ public class StationListFragment extends Fragment {
         @Override
         protected void onPostExecute(List<Station> stationList) {
             boolean isGetInformation = true;
+            //если не удалось получить данные сервера, то
+            //требуется уведомить пользователя и предоставить возможность повторить соединение
+            //для этого отображаем кнопку повторного соединения
             if (stationList.size() == 0){
                 Toast.makeText(getContext(), "No internet connection, try again later", Toast.LENGTH_SHORT).show();
                 mRefreshConnectionButton.setVisibility(View.VISIBLE);
@@ -315,6 +334,7 @@ public class StationListFragment extends Fragment {
 
     }
 
+    //вспомогательные методы для сортировки данных для синглета
     private List<Country> refactorData(List<Station> stationList){
         List<Country> countryList = new ArrayList<>();
 

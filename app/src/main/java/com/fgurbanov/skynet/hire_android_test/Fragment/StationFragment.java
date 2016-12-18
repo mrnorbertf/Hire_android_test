@@ -19,6 +19,7 @@ import com.fgurbanov.skynet.hire_android_test.R;
 
 /**
  * Created by SkyNet on 12.12.2016.
+ * фрагмент для отображения информации о станции
  */
 
 public class StationFragment extends Fragment {
@@ -77,10 +78,6 @@ public class StationFragment extends Fragment {
 
         // Enable the Up button
         ab.setDisplayHomeAsUpEnabled(true);
-
-        //((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
 
         mStationTextView = (TextView) v.findViewById(R.id.station_title_textView);
         mStationTextView.setText(mStation.getStationTitle());

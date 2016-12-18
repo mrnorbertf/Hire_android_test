@@ -1,9 +1,12 @@
 package com.fgurbanov.skynet.hire_android_test.Data;
 
-import java.util.UUID;
+
 
 /**
  * Created by SkyNet on 12.12.2016.
+ * Для expandbleListView потребовалось разделить данные на 3 класса.
+ * Основной класс с данными.
+ * Содержит всю информацию о станции.
  */
 
 public class Station {

@@ -11,15 +11,12 @@ import com.fgurbanov.skynet.hire_android_test.R;
 
 /**
  * Created by SkyNet on 17.12.2016.
+ * Отображает информацию о приложении.
  */
 
 public class AboutFragment extends Fragment {
 
 
-    public static AboutFragment newInstance() {
-        AboutFragment fragment = new AboutFragment();
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,7 +27,6 @@ public class AboutFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_about, container, false);
-        return v;
+        return inflater.inflate(R.layout.fragment_about, container, false);
     }
 }

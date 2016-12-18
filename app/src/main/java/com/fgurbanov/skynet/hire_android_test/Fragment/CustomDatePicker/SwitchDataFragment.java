@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 /**
  * Created by SkyNet on 24.11.2016.
+ * Вспомогательный Фрагмент для доступа к Data and Time Picker
  */
 
 public class SwitchDataFragment extends DialogFragment {
@@ -126,7 +127,6 @@ public class SwitchDataFragment extends DialogFragment {
             return;
         }
         if (requestCode == REQUEST_DATE) {
-            //TODO: Change all Util.Date to Calendar
 
             Date tempDate = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
 
@@ -157,7 +157,6 @@ public class SwitchDataFragment extends DialogFragment {
     }
 
     private void updateDate() {
-
         mTempText.setText(DateFormat.format(
                 //        "EEEE, MMM dd, yyyy", mDate).toString();
                 "EEEE, MMM dd, yyyy kk:mm", mDate).toString());
