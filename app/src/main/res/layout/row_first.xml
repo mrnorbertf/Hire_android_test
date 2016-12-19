@@ -21,54 +21,14 @@
         android:id="@+id/imageFirstArrow"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="16dp"/>
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/textViewName"
         android:background="@color/colorDividersRow"/>
-<!--
 
-    <RelativeLayout
-        android:id="@+id/linearFirst"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorRowPrimary" >
-
-        <TextView
-            android:id="@+id/textViewName"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:gravity="center_vertical"
-            android:text="TextView"
-            android:textColor="@color/colorPrimaryText"
-            android:textSize="20sp"
-            android:fontFamily="sans-serif"/>
-        <ImageView
-            android:id="@+id/imageFirstArrow"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="16dp"/>
-
-    </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/linear_scroll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:orientation="vertical" />
-
-    <View
-          android:layout_width="match_parent"
-          android:layout_height="1dp"
-          android:background="?android:attr/dividerVertical"/>
-
--->
 
 </RelativeLayout>

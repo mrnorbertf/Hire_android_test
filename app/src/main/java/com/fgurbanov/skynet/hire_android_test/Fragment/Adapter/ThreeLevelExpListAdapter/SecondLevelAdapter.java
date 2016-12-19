@@ -39,12 +39,11 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        //if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.row_third, null);
-            TextView text = (TextView) convertView.findViewById(R.id.textViewItemName);
-            text.setText((String) getChild(groupPosition, childPosition));
-        //}
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        convertView = inflater.inflate(R.layout.row_third, null);
+        TextView text = (TextView) convertView.findViewById(R.id.textViewItemName);
+        text.setText((String) getChild(groupPosition, childPosition));
+
         return convertView;
     }
 
@@ -78,6 +77,9 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter {
         text.setText(mCityList.get(groupPosition).getCityTitle());
 
         ImageView imageSecondArrow = (ImageView) convertView.findViewById(R.id.imageSecondArrow);
+        //imageSecondArrow.setImageResource(R.drawable.arw_down);
+
+
         if (isExpanded){
             imageSecondArrow.setBackgroundResource(R.drawable.arw_down);
         } else {

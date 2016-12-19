@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Hire android test</string>
     <string name="menu_station_detail">Station detail</string>
-    <string name="search_station">Search station....</string>
+    <string name="search_station">Search station...</string>
     <string name="clear_search">clear search</string>
     <string name="station_from">select station from</string>
     <string name="station_to">select station to</string>
@@ -33,6 +33,9 @@
     <string name="title_activity_parallaxtoolbarscrollview">Parallax scrollView &amp; toolbar</string>
     <string name="title_activity_toolbarcontrolscrollview">ScrollView &amp; Toolbar</string>
     <string name="swap_content_in_editview">Swap content in editView</string>
+
+
+    <string name="testtextviewinformation">TestTextViewInformation</string>
 
 
 </resources>
